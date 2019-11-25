@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "870876495541",
+    "firebase_url": "https://nothotdog-712ba.firebaseio.com",
+    "project_id": "nothotdog-712ba",
+    "storage_bucket": "nothotdog-712ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870876495541:android:1f22c19fc6f47c83c388fc",
+        "android_client_info": {
+          "package_name": "com.nothotdog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870876495541-c33k9osluibvtkml7lo9ihd4jk9o5j07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASiWHxeBmAa22FP8SFwe3QsFf6Jv1zinY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870876495541-c33k9osluibvtkml7lo9ihd4jk9o5j07.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
