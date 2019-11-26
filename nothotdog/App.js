@@ -58,6 +58,14 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
+    fetch(`http://localhost:8080/api/test`)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson.express);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   doImageRec = (url) => {
@@ -174,7 +182,7 @@ export default class App extends React.Component {
       })
     } else {
       return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingTop:30 }}>
           <Text style={{ fontSize: 25, fontWeight: 'bold', textAlign: 'center' }}>Upload or take an image of your plate!</Text>
         </View>
       )
@@ -218,7 +226,7 @@ export default class App extends React.Component {
 
             {!this.state.results && !this.state.loading && (
               <View>
-                <Text style={{fontSize:20, fontWeight:'bold', padding:10}}>History</Text>
+                {/* <Text style={{fontSize:20, fontWeight:'bold', padding:10}}>History</Text> */}
                 {this.getScanHistory()}
               </View>
             )}
