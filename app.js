@@ -26,7 +26,7 @@ router.get('/imageRec', function(req, res) {
   const visualRecognition = new VisualRecognitionV3({
     version: '2018-03-19',
     authenticator: new IamAuthenticator({
-      apikey: '',
+      apikey: 'r19zl00ZVCzhMqwG1c4KUVXnqwpadr2kSEgs-jlsP_ZR',
     }),
     url: 'https://gateway.watsonplatform.net/visual-recognition/api',
   });

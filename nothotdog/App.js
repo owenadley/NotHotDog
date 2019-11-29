@@ -17,7 +17,8 @@ import {
   Button,
   TouchableOpacity,
   Image,
-  AsyncStorage
+  AsyncStorage,
+  Dimensions
 } from 'react-native';
 
 import {
@@ -34,9 +35,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import LottieView from 'lottie-react-native';
 
 const fetch = require("node-fetch");
+const WIDTH = Dimensions.get('window').width;
 
 // some hardcoded calorie values for sake of demo
-let foodCals = { 'hotdog': 151, 'spaghetti': 221, 'ice-cream cone': 146 }
+let foodCals = { 'hotdog': 151, 'spaghetti': 221, 'vanilla ice cream': 146 }
+let foodCarbs = { 'hotdog': 2.2, 'spaghetti': 43, 'vanilla ice cream': 24 }
+const dailyCals = 2800;
 
 export default class App extends React.Component {
   constructor(props) {
@@ -133,6 +137,23 @@ export default class App extends React.Component {
     }
   }
 
+
+  getTotalCals = () => {
+    var totalCals = 0;
+    if (this.state.history) {
+      JSON.parse(this.state.history).map((food) => {
+        console.log(foodCals[food]);
+        totalCals= totalCals + foodCals[food]
+      });
+      return (
+        totalCals
+      )
+    } 
+  }
+
+
+
+
   saveScan = () => {
 
     // save new scan to async storage in an array
@@ -171,13 +192,37 @@ export default class App extends React.Component {
 
       return JSON.parse(this.state.history).map((food) => {
         return (
-          <View style={{ backgroundColor: '#ecf0f1', marginBottom: 20, padding: 20, borderRadius: 15, alignContent: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={{ fontSize: 25 }}>{food}</Text>
-            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{foodCals[food]}</Text>
-              <Text>Calories</Text>
+          <View style={{ backgroundColor: '#ecf0f1', marginBottom: 20, paddingBottom:20, paddingHorizontal:20, paddingTop:10, borderRadius: 15 }}>
+            <View style={{borderBottomWidth:2, padding:10}}>
+              
+              <Text style={{ fontSize: 25, textAlign:'left' }}>{food}</Text>
+              <Text style={{ fontSize: 25, textAlign:'left' }}>{this.state.results.images[0].classifiers[0].classes[1].class}</Text>
+              <Text style={{ fontSize: 25, textAlign:'left' }}>{this.state.results.images[0].classifiers[0].classes[2].class}</Text>
+              <Text style={{ fontSize: 25, textAlign:'left' }}>{this.state.results.images[0].classifiers[0].classes[3].class}</Text>
+              <Text style={{ fontSize: 25, textAlign:'left' }}>{this.state.results.images[0].classifiers[0].classes[4].class}</Text>
+              <Text style={{ fontSize: 25, textAlign:'left' }}>{this.state.results.images[0].classifiers[0].classes[5].class}</Text>
+              <Text style={{ fontSize: 25, textAlign:'left' }}>{this.state.results.images[0].classifiers[0].classes[6].class}</Text>
+
+
+            
             </View>
-          </View>
+                <View style={{flexDirection: 'column', paddingTop:10, paddingLeft:30}}>
+                  <View style={{flexDirection:'row'}}>
+                    <Text style={{marginRight:20, fontSize:20, fontWeight:'bold', textAlign:'left'}}>Calories:</Text>
+                    <Text style={{ fontSize: 20, }}>{foodCals[food]}</Text>
+                  </View>
+
+                  <View style={{flexDirection:'row'}}>
+                    <Text style={{marginRight:20, fontSize:20, fontWeight:'bold', textAlign:'left'}}>Carbohydrates:</Text>
+                    <Text style={{ fontSize: 20, }}>{foodCarbs[food]}</Text>
+                  </View>
+
+                  <View style={{ paddingTop:10}}>
+                    <Text style={{marginRight:20, fontSize:20, textAlign:'left'}}>{Math.round((foodCals[food]/dailyCals)*100)*100/100} % of daily calorie intake</Text>
+                  </View>
+                </View>
+            </View>
+      
         )
       })
     } else {
@@ -209,6 +254,8 @@ export default class App extends React.Component {
                 <View style={{ textAlign: 'left', paddingLeft: 40, paddingTop: 20 }}>
                   <Text style={{ color: '#ecf0f1', fontSize: 20 }}>Looks like: {this.state.results.images[0].classifiers[0].classes[0].class}</Text>
                   <Text style={{ color: '#ecf0f1', fontSize: 20 }}>Calories: {foodCals[this.state.results.images[0].classifiers[0].classes[0].class]}</Text>
+                  <Text style={{ color: '#ecf0f1', fontSize: 20 }}>Carbohydrates: {foodCarbs[this.state.results.images[0].classifiers[0].classes[0].class]}</Text>
+
                 </View>
 
                 <View style={{ flexDirection: 'row', margin: 20 }}>
@@ -225,9 +272,19 @@ export default class App extends React.Component {
             )}
 
             {!this.state.results && !this.state.loading && (
+
               <View>
-                {/* <Text style={{fontSize:20, fontWeight:'bold', padding:10}}>History</Text> */}
-                {this.getScanHistory()}
+                 {this.state.history && (
+                    <View style={{width:WIDTH, backgroundColor:'#ecf0f1', padding:10, marginBottom:20}}>
+                      <Text style={{fontSize:17}}>Total Calories: {this.getTotalCals()}</Text>
+                      <Text style={{fontSize:17}}>Daily Calories: {Math.round((this.getTotalCals() / dailyCals)*100 )*100/100}%</Text>
+                    </View>
+                 )}
+
+                <ScrollView>
+                  {/* <Text style={{fontSize:20, fontWeight:'bold', padding:10}}>History</Text> */}
+                  {this.getScanHistory()}
+                </ScrollView>
               </View>
             )}
 
